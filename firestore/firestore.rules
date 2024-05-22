@@ -1,0 +1,26 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /{document=**} {
+      allow read, write: if request.time < timestamp.date(2025, 1, 1);
+    }
+  }
+
+  // TODO: Security rules in production
+  // match /databases/{database}/documents {
+  //   // Match any document in the 'apps/group-shopping-list/users' collection
+  //   match apps/group-shopping-list//users/{userId} {
+  //     // Only allow a user to read, update, or delete their own document
+  //     allow read, update, delete: if request.auth.uid == userId; 
+  //     // Any authenticated user can create a new document
+  //     allow create: if request.auth.uid != null; 
+      
+  //     // Match any document in the 'grocery-items' subcollection of a specific user
+  //     match /grocery-items/{itemId} {
+  //       // Only allow users to read/write their own items
+  //       allow read, write: if request.auth.uid == userId; 
+  //     }
+  //   }
+  // }
+}
